@@ -33,11 +33,11 @@ func (a Accept) First(contentTypes ...string) *ContentType {
 ALL_BREAK:
 	for _, s := range contentTypes {
 		c, err := ParseContentType(s)
-		if err != nil {
+		if err == nil {
 			for q2, l := range a {
 				for _, t := range l {
 					if t.Match(&c) && q < q2 {
-						ct = &t
+						ct = &c
 						q = q2
 						if q == 1 {
 							break ALL_BREAK
@@ -48,4 +48,14 @@ ALL_BREAK:
 		}
 	}
 	return ct
+}
+
+func (a Accept) String() string {
+	b := ""
+	for _, l := range a {
+		for _, v := range l {
+			b += v.String()
+		}
+	}
+	return b
 }
